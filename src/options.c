@@ -115,9 +115,9 @@ void options_parse(options_t *options, int argc, char *argv[]) {
 				options->num_lines = l;
 			} break;
 			case 'm':
-				if (strcmp(optarg, "score") && strcmp(optarg, "order")) {
+				if (strcmp(optarg, "score") && strcmp(optarg, "order") && strcmp(optarg, "reverse")) {
 					fprintf(stderr, "Invalid format for --sorting-method: %s\n", optarg);
-					fprintf(stderr, "Must be either 'score' or 'order'\n");
+					fprintf(stderr, "Must be either 'score', 'order' or 'reverse'\n");
 					usage(argv[0]);
 					exit(EXIT_FAILURE);
 				}

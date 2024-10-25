@@ -49,6 +49,19 @@ static int cmpchoice_order(const void *_idx1, const void *_idx2) {
 	}
 }
 
+static int cmpchoice_reverse(const void *_idx1, const void *_idx2) {
+	const struct scored_result *a = _idx1;
+	const struct scored_result *b = _idx2;
+
+	if (a->order == b->order) {
+		return 0;
+	} else if (a->order > b->order) {
+		return 1;
+	} else {
+		return -1;
+	}
+}
+
 static void *safe_realloc(void *buffer, size_t size) {
 	buffer = realloc(buffer, size);
 	if (!buffer) {
@@ -121,10 +134,12 @@ void choices_init(choices_t *c, options_t *options) {
 	c->capacity = c->size = 0;
 	choices_resize(c, INITIAL_CHOICE_CAPACITY);
 
-	if (!strcmp(options->sorting_method, "score")) {
-		c->cmpchoice = cmpchoice_score;
-	} else {
+	if (!strcmp(options->sorting_method, "order")) {
 		c->cmpchoice = cmpchoice_order;
+	} else if (!strcmp(options->sorting_method, "reverse")) {
+		c->cmpchoice = cmpchoice_reverse;
+	} else {
+		c->cmpchoice = cmpchoice_score;
 	}
 
 	if (options->workers) {
